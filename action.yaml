@@ -22,6 +22,10 @@ inputs:
     description: 'Application name (defaults to repository name)'
     required: false
     default: ''
+  app-dir:
+    description: 'Directory containing Go application (default: root directory)'
+    required: false
+    default: ''
   port:
     description: 'Application port'
     required: false
@@ -80,6 +84,10 @@ runs:
       env:
         ACTION_REF: ${{ github.action_ref || 'main' }}
       run: |
+        # If app-dir is set, change to that directory, else stay at root
+        if [ -n "${{ inputs.app-dir }}" ]; then
+          cd "${{ inputs.app-dir }}"
+        fi
         if [ -n "${{ inputs.object-storage-bucket }}" ] && \
            [ -n "${{ inputs.object-storage-access-key }}" ] && \
            [ -n "${{ inputs.object-storage-secret-key }}" ] && \
@@ -104,6 +112,10 @@ runs:
       id: app-name
       shell: bash
       run: |
+        # Change to app-dir if specified
+        if [ -n "${{ inputs.app-dir }}" ]; then
+          cd "${{ inputs.app-dir }}"
+        fi
         APP_NAME="${{ inputs.app-name }}"
         if [ -z "$APP_NAME" ]; then
           APP_NAME="${{ github.event.repository.name }}"
@@ -123,7 +135,7 @@ runs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        context: .
+        context: ${{ inputs.app-dir || '.' }}
         platforms: linux/amd64
         push: true
         tags: |
