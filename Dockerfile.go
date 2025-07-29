@@ -8,7 +8,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o app
+RUN CGO_ENABLED=1 GOOS=linux go build -o app
 
 # Run stage
 FROM alpine:3.20
@@ -16,6 +16,8 @@ FROM alpine:3.20
 WORKDIR /app
 
 COPY --from=builder /app/app /app/app
+
+RUN apk add --no-cache bash curl ca-certificates sqlite-libs
 
 ARG PORT=8080
 ENV PORT=$PORT
