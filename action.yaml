@@ -11,13 +11,13 @@ inputs:
     required: true
   container-registry:
     description: 'Container registry URL (e.g., myregistry.sakuracr.jp)'
-    required: true
+    required: false
   container-registry-user:
     description: 'Container registry username'
-    required: true
+    required: false
   container-registry-password:
     description: 'Container registry password'
-    required: true
+    required: false
   app-name:
     description: 'Application name (defaults to repository name)'
     required: false
@@ -125,6 +125,15 @@ runs:
           APP_NAME="${{ github.event.repository.name }}"
         fi
         echo "name=${APP_NAME}" >> $GITHUB_OUTPUT
+
+    - name: Check registry inputs if not using custom-image
+      if: ${{ inputs.custom-image == '' }}
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.container-registry }}" ] || [ -z "${{ inputs.container-registry-user }}" ] || [ -z "${{ inputs.container-registry-password }}" ]; then
+          echo "container-registry, container-registry-user, container-registry-password are required if custom-image is not set."
+          exit 1
+        fi
 
     - name: Login to Container Registry
       uses: docker/login-action@v3
