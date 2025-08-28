@@ -73,7 +73,7 @@ inputs:
   auth-github-id:
     description: 'GitHub OAuth ID'
     required: true
-  auth-github-scret:
+  auth-github-secret:
     description: 'GitHub OAuth Secret'
     required: true
   auth-secret:
