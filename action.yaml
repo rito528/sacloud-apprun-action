@@ -73,7 +73,7 @@ inputs:
   auth-github-id:
     description: 'GitHub OAuth ID'
     required: true
-  auth-github-screts:
+  auth-github-scret:
     description: 'GitHub OAuth Secret'
     required: true
   auth-secret:
@@ -209,8 +209,8 @@ runs:
         if [ -n "${{ inputs.auth-github-id }}" ]; then
           ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "AUTH_GITHUB_ID", "value": "${{ inputs.auth-github-id }}"}]')
         fi
-        if [ -n "${{ inputs.auth-github-secrets }}" ]; then
-          ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "AUTH_GITHUB_SECRETS", "value": "${{ inputs.auth-github-secrets }}"}]')
+        if [ -n "${{ inputs.auth-github-secret }}" ]; then
+          ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "AUTH_GITHUB_SECRET", "value": "${{ inputs.auth-github-secret }}"}]')
         fi
         if [ -n "${{ inputs.auth-secret }}" ]; then
           ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "AUTH_SECRET", "value": "${{ inputs.auth-secret }}"}]')
