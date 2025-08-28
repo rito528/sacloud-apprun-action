@@ -79,6 +79,9 @@ inputs:
   auth-secret:
     description: 'Secret for OAuth state verification'
     required: true
+  auth-url:
+    description: 'OAuth callback URL'
+    required: true
 
 outputs:
   public-url:
@@ -211,6 +214,9 @@ runs:
         fi
         if [ -n "${{ inputs.auth-secret }}" ]; then
           ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "AUTH_SECRET", "value": "${{ inputs.auth-secret }}"}]')
+        fi
+        if [ -n "${{ inputs.auth-url }}" ]; then
+          ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "AUTH_URL", "value": "${{ inputs.auth-url }}"}]')
         fi
 
         ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "APP_NAME", "value": "${{ steps.app-name.outputs.name }}"}]')
