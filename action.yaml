@@ -203,7 +203,7 @@ runs:
         if [ -n "${{ inputs.litestream-replicate-interval }}" ]; then
           ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "LITESTREAM_REPLICATE_INTERVAL", "value": "${{ inputs.litestream-replicate-interval }}"}]')
         fi
-        if [ -b "${{ inputs.auth-github-id }}" ]; then
+        if [ -n "${{ inputs.auth-github-id }}" ]; then
           ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "AUTH_GITHUB_ID", "value": "${{ inputs.auth-github-id }}"}]')
         fi
         if [ -n "${{ inputs.auth-github-secrets }}" ]; then
