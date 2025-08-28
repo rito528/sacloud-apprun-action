@@ -82,6 +82,12 @@ inputs:
   auth-url:
     description: 'OAuth callback URL'
     required: true
+  db-file-name:
+    description: 'SQLite database file name inside the container'
+    required: true
+  database-url:
+    description: 'Database connection URL'
+    required: true
 
 outputs:
   public-url:
@@ -217,6 +223,12 @@ runs:
         fi
         if [ -n "${{ inputs.auth-url }}" ]; then
           ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "AUTH_URL", "value": "${{ inputs.auth-url }}"}]')
+        fi
+        if [ -n "${{ inputs.db-file-name }}" ]; then
+          ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "DB_FILE_NAME", "value": "${{ inputs.db-file-name }}"}]')
+        fi
+        if [ -n "${{ inputs.database-url }}" ]; then
+          ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "DATABASE_URL", "value": "${{ inputs.database-url }}"}]')
         fi
 
         ENV_VARS=$(echo "$ENV_VARS" | jq '. + [{"key": "APP_NAME", "value": "${{ steps.app-name.outputs.name }}"}]')
