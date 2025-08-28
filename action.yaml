@@ -175,6 +175,7 @@ runs:
           ${{ inputs.container-registry }}/${{ steps.app-name.outputs.name }}:${{ github.sha }}
         build-args: |
           PORT=${{ inputs.port }}
+          DB_FILE_NAME=${{ inputs.db-file-name }}
         provenance: false
 
     - name: Set image for deploy
